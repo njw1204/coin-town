@@ -1,0 +1,13 @@
+version: "3"
+
+services:
+  banking-api:
+    build: .
+    ports:
+      - "127.0.0.1:5000:5000"
+    restart: unless-stopped
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "20m"
+        max-file: "5"

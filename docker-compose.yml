@@ -1,0 +1,73 @@
+version: '3'
+
+services:
+  banking-api:
+    build:
+      context: banking
+    logging:
+      driver: json-file
+      options:
+        max-file: '5'
+        max-size: 20m
+    ports:
+    - 127.0.0.1:5000:5000/tcp
+    restart: unless-stopped
+  btc-node:
+    command:
+    - -testnet
+    - -maxmempool=50
+    - -dbcache=50
+    - -prune=600
+    - -disablewallet=0
+    - -fallbackfee=0.0001
+    - -server=1
+    - -rpcbind=0.0.0.0
+    - -rpcport=8332
+    - -rpcallowip=0.0.0.0/0
+    - -rpcthreads=1
+    - -rpcuser=id
+    - -rpcpassword=pw
+    image: kylemanna/bitcoind@sha256:2d24b29532ecbd4706358ce49b0549b73b905414e62cb2cb7ce431796941344f
+    logging:
+      driver: json-file
+      options:
+        max-file: '5'
+        max-size: 20m
+    ports:
+    - 127.0.0.1:8332:8332/tcp
+    - published: 8333
+      target: 8333
+    restart: unless-stopped
+    volumes:
+    - btc-chain-volume:/bitcoin/.bitcoin:rw
+  eth-node:
+    command:
+    - --ropsten
+    - --syncmode
+    - light
+    - --cache
+    - '128'
+    - --http
+    - --http.addr
+    - 0.0.0.0
+    - --ws
+    - --ws.addr
+    - 0.0.0.0
+    image: ethereum/client-go@sha256:b3e4d0d1b36ff73c81aa493176486315a0734cb13f71c67f81a271bc52eb9ac6
+    logging:
+      driver: json-file
+      options:
+        max-file: '5'
+        max-size: 20m
+    ports:
+    - 127.0.0.1:8545:8545/tcp
+    - 127.0.0.1:8546:8546/tcp
+    - published: 30303
+      target: 30303
+    restart: unless-stopped
+    volumes:
+    - eth-chain-volume:/root:rw
+
+volumes:
+  btc-chain-volume: {}
+  eth-chain-volume: {}

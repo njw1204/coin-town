@@ -1,0 +1,4 @@
+Flask==2.0.*
+gunicorn==20.*
+gevent>=1.4
+simple-bank-korea==0.2.*

@@ -4,7 +4,7 @@ services:
   btc-node:
     image: kylemanna/bitcoind@sha256:2d24b29532ecbd4706358ce49b0549b73b905414e62cb2cb7ce431796941344f
     volumes:
-      - coin-town-btc-chain-volume:/bitcoin/.bitcoin
+      - btc-chain-volume:/bitcoin/.bitcoin
     ports:
       - "127.0.0.1:8332:8332"
       - "8333:8333"
@@ -31,7 +31,7 @@ services:
   eth-node:
     image: ethereum/client-go@sha256:b3e4d0d1b36ff73c81aa493176486315a0734cb13f71c67f81a271bc52eb9ac6
     volumes:
-      - coin-town-eth-chain-volume:/root
+      - eth-chain-volume:/root
     ports:
       - "127.0.0.1:8545:8545"
       - "127.0.0.1:8546:8546"
@@ -56,5 +56,5 @@ services:
       - "0.0.0.0"
 
 volumes:
-  coin-town-btc-chain-volume:
-  coin-town-eth-chain-volume:
+  btc-chain-volume:
+  eth-chain-volume:
