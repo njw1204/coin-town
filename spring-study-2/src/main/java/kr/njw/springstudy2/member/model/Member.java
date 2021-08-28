@@ -1,7 +1,9 @@
 package kr.njw.springstudy2.member.model;
 
 import kr.njw.springstudy2.member.constant.Grade;
+import lombok.ToString;
 
+@ToString
 public class Member {
     private Long id;
     private String name;
