@@ -4,6 +4,8 @@ on:
   push:
     branches:
       - spring-study
+    paths:
+      - 'spring-study-1/*'
 
   workflow_dispatch:
 
