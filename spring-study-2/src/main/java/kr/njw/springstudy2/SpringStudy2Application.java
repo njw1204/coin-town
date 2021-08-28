@@ -9,9 +9,13 @@ import kr.njw.springstudy2.order.service.OrderService;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.context.ApplicationContext;
+import org.springframework.context.annotation.AnnotationConfigApplicationContext;
+import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Component;
 
 import java.util.Scanner;
+import java.util.concurrent.ThreadLocalRandom;
 
 @SpringBootApplication
 public class SpringStudy2Application {
@@ -20,10 +24,16 @@ public class SpringStudy2Application {
     }
 
     @Component
+    @Profile("!test")
     public static class SpringStudy2CommandLineRunner implements CommandLineRunner {
-        private final AppConfig appConfig = new AppConfig();
-        private final MemberService memberService = appConfig.memberService();
-        private final OrderService orderService = appConfig.orderService();
+        private final MemberService memberService;
+        private final OrderService orderService;
+
+        public SpringStudy2CommandLineRunner() {
+            ApplicationContext context = new AnnotationConfigApplicationContext(AppConfig.class);
+            this.memberService = context.getBean("memberService", MemberService.class);
+            this.orderService = context.getBean("orderService", OrderService.class);
+        }
 
         @Override
         public void run(String... args) {
@@ -31,7 +41,8 @@ public class SpringStudy2Application {
 
             System.out.print("소비자가격: ");
             int itemPrice = Integer.parseInt(scanner.nextLine());
-            Member member = new Member(1L, "테스트", Grade.VIP);
+            Member member = new Member(ThreadLocalRandom.current().nextLong(1, Long.MAX_VALUE),
+                    "테스트", Grade.VIP);
 
             this.memberService.join(member);
             Order order = this.orderService.createOrder(member.getId(), "사과", itemPrice);
