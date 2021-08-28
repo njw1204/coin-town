@@ -6,16 +6,13 @@ import kr.njw.springstudy2.member.service.MemberService;
 import kr.njw.springstudy2.member.service.impl.MemberServiceImpl;
 import kr.njw.springstudy2.order.model.Order;
 import kr.njw.springstudy2.order.service.impl.OrderServiceImpl;
-import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.Test;
 
 import static org.assertj.core.api.Assertions.*;
 
 public class OrderServiceTest {
-    final int DISCOUNT_PRICE_FOR_VIP = 1000;
-
-    final MemberService memberService = new MemberServiceImpl();
-    final OrderService orderService = new OrderServiceImpl();
+    MemberService memberService = new MemberServiceImpl();
+    OrderService orderService = new OrderServiceImpl();
 
     @Test
     void 주문생성() {
@@ -36,11 +33,11 @@ public class OrderServiceTest {
         assertThat(order.getMemberId()).isEqualTo(member.getId());
         assertThat(order.getItemName()).isEqualTo("오렌지");
         assertThat(order.getItemPrice()).isEqualTo(5000);
-        assertThat(order.getDiscountPrice()).isEqualTo(this.DISCOUNT_PRICE_FOR_VIP);
+        assertThat(order.getDiscountPrice()).isEqualTo(500);
         assertThat(order.calculatePrice()).isEqualTo(order.getItemPrice() - order.getDiscountPrice());
 
         assertThat(lowPriceOrder.getItemPrice()).isEqualTo(10);
-        assertThat(lowPriceOrder.getDiscountPrice()).isEqualTo(Math.min(this.DISCOUNT_PRICE_FOR_VIP, 10));
+        assertThat(lowPriceOrder.getDiscountPrice()).isEqualTo(1);
         assertThat(lowPriceOrder.calculatePrice()).isEqualTo(lowPriceOrder.getItemPrice() - lowPriceOrder.getDiscountPrice());
 
         assertThat(orderForBasic.getDiscountPrice()).isEqualTo(0);
