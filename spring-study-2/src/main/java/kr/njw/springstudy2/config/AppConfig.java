@@ -13,7 +13,7 @@ import org.springframework.context.annotation.Configuration;
 
 @Configuration
 public class AppConfig {
-    @Bean
+    @Bean("myDiscountPolicy")
     public DiscountPolicy discountPolicy() {
         return new RateDiscountPolicy();
     }
