@@ -1,14 +1,21 @@
 package kr.njw.springstudy2.member.service;
 
+import kr.njw.springstudy2.config.AppConfig;
 import kr.njw.springstudy2.member.constant.Grade;
 import kr.njw.springstudy2.member.model.Member;
-import kr.njw.springstudy2.member.service.impl.MemberServiceImpl;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import static org.assertj.core.api.Assertions.*;
 
 public class MemberServiceTest {
-    MemberService memberService = new MemberServiceImpl();
+    MemberService memberService;
+
+    @BeforeEach
+    void beforeEach() {
+        AppConfig appConfig = new AppConfig();
+        this.memberService = appConfig.memberService();
+    }
 
     @Test
     void 회원가입() {
@@ -17,7 +24,7 @@ public class MemberServiceTest {
 
         // when
         this.memberService.join(member);
-        Member foundMember = this.memberService.findMember(member.getId()).get();
+        Member foundMember = this.memberService.findMember(member.getId()).orElseThrow();
 
         // then
         assertThat(foundMember).isEqualTo(member);

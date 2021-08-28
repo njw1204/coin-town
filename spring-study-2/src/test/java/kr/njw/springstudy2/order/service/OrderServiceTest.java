@@ -1,18 +1,25 @@
 package kr.njw.springstudy2.order.service;
 
+import kr.njw.springstudy2.config.AppConfig;
 import kr.njw.springstudy2.member.constant.Grade;
 import kr.njw.springstudy2.member.model.Member;
 import kr.njw.springstudy2.member.service.MemberService;
-import kr.njw.springstudy2.member.service.impl.MemberServiceImpl;
 import kr.njw.springstudy2.order.model.Order;
-import kr.njw.springstudy2.order.service.impl.OrderServiceImpl;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import static org.assertj.core.api.Assertions.*;
 
 public class OrderServiceTest {
-    MemberService memberService = new MemberServiceImpl();
-    OrderService orderService = new OrderServiceImpl();
+    MemberService memberService;
+    OrderService orderService;
+
+    @BeforeEach
+    void beforeEach() {
+        AppConfig appConfig = new AppConfig();
+        this.memberService = appConfig.memberService();
+        this.orderService = appConfig.orderService();
+    }
 
     @Test
     void 주문생성() {
